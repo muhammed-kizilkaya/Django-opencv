@@ -1,33 +1,9 @@
-<!DOCTYPE html>
-<html>
-    {% load static %}
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>Home - Clay</title>
- 
-      <!-- Custom fonts for this template-->
-  <link href="{% static 'bootstrap/css/bootstrap.min.css' %}" rel="stylesheet" type="text/css">
+{% extends 'base.html' %}
+{% load static %}
+{% load i18n %}
 
-  <!-- Page level plugin CSS-->
-   
 
- 
-</head>
-
-<body id="page-top" data-bs-spy="scroll" data-bs-target="#mainNav" data-bs-offset="72">
-    <nav class="navbar navbar-light navbar-expand-lg fixed-top bg-secondary text-uppercase" id="mainNav">
-        <div class="container"><a class="navbar-brand"href="http://127.0.0.1:8000/">Clay</a><button data-bs-toggle="collapse" data-bs-target="#navbarResponsive" class="navbar-toggler text-white bg-primary navbar-toggler-right text-uppercase rounded" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"><i class="fa fa-bars"></i></button>
-            <div id="navbarResponsive" class="collapse navbar-collapse">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="http://127.0.0.1:8000/">JS</a></li>
-                    <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="/cv2_page">Open CV</a></li>
-                    <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="/auto_record">Auto Record</a></li>
-                    <li class="nav-item mx-0 mx-lg-1"></li>
-                </ul>
-            </div>
-        </div>
-    </nav>
+{% block content %}
         <header class="text-center text-white bg-primary masthead">
             <button type="button" class="btn btn-secondary" onClick="myFunction()">Open Cv Camera</button>
             
@@ -44,7 +20,8 @@
  
             </script>
 
-
+    <img src = "{% url 'video_feed' %}">
+ 
 
             <div class="container"><img class="img-fluid d-block mx-auto mb-5" id='first'  style="display: none;">
                 <h1>Cam test</h1>
@@ -52,10 +29,4 @@
                 <h2 class="font-weight-light mb-0"> </h2>
             </div>
     </header>
-    <footer class="text-center footer">
-        <div class="container"></div>
-    </footer>
-  
-</body>
-
-</html> 
+    {% endblock %}

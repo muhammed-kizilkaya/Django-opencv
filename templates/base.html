@@ -1,3 +1,6 @@
+ 
+
+{% load i18n %}
 <!DOCTYPE html>
 <html>
     {% load static %}
@@ -15,12 +18,16 @@
  
 </head>
 
+      
+
 <body id="page-top" data-bs-spy="scroll" data-bs-target="#mainNav" data-bs-offset="72">
+   
+ 
     <nav class="navbar navbar-light navbar-expand-lg fixed-top bg-secondary text-uppercase" id="mainNav">
         <div class="container"><a class="navbar-brand"href="http://127.0.0.1:8000/">Clay</a><button data-bs-toggle="collapse" data-bs-target="#navbarResponsive" class="navbar-toggler text-white bg-primary navbar-toggler-right text-uppercase rounded" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"><i class="fa fa-bars"></i></button>
             <div id="navbarResponsive" class="collapse navbar-collapse">
                 <ul class="navbar-nav ms-auto">
-                    <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="http://127.0.0.1:8000/">JS</a></li>
+                    <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="http://127.0.0.1:8000/">Button Click Record</a></li>
                     <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="/cv2_page">Open CV</a></li>
                     <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="/auto_record">Auto Record</a></li>
                     <li class="nav-item mx-0 mx-lg-1"></li>
@@ -31,7 +38,7 @@
     </nav>
     <header class="text-center text-white bg-primary masthead">
          
-
+     {%block content %}
 
         <button type="button" class="btn btn-secondary" id="start-camera">Start Camera</button>
         <video id="video" width="320" height="240" autoplay></video>
@@ -45,14 +52,14 @@
         <script>
                 window.onload=function() {
               
-                 alert("Hello");
+                
                  document.getElementById("h1_text").style.color = "red";
 
   
             };
 
             function selamVer() {
-                alert("Selam  ");
+           
                 }
 
             let camera_button = document.querySelector("#start-camera");
@@ -109,6 +116,7 @@
         <div class="container"></div>
     </footer>
  
+{% endblock %}
 </body>
 
-</html>
+</html >

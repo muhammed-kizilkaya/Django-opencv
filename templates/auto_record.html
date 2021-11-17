@@ -1,123 +1,101 @@
-<!DOCTYPE html>
-<html>
-    {% load static %}
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>Home - Clay</title>
+{% extends 'base.html' %}
+{% load static %}
+{% load i18n %}
+
+
+{% block content %}
+<div id="container">
+    <video autoplay="true" id="videoElement">
+
+    </video>
+    
+    <button type="button" class="btn btn-secondary" id="btn">Start Recording</button>
+    <button type="button" class="btn btn-secondary"id="stopbtn">Stop Recording</button>
+
+    <div>Time left = <span id="timer"></span></div>
+    
  
-      <!-- Custom fonts for this template-->
-  <link href="{% static 'bootstrap/css/bootstrap.min.css' %}" rel="stylesheet" type="text/css">
 
-  <!-- Page level plugin CSS-->
-   
+</div>
 
- 
-</head>
 
-<body id="page-top" data-bs-spy="scroll" data-bs-target="#mainNav" data-bs-offset="72">
-    <nav class="navbar navbar-light navbar-expand-lg fixed-top bg-secondary text-uppercase" id="mainNav">
-        <div class="container"><a class="navbar-brand"href="http://127.0.0.1:8000/">Clay</a><button data-bs-toggle="collapse" data-bs-target="#navbarResponsive" class="navbar-toggler text-white bg-primary navbar-toggler-right text-uppercase rounded" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"><i class="fa fa-bars"></i></button>
-            <div id="navbarResponsive" class="collapse navbar-collapse">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="http://127.0.0.1:8000/">JS</a></li>
-                    <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="/cv2_page">Open CV</a></li>
-                    <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="/auto_record">Auto Record</a></li>
-                    <li class="nav-item mx-0 mx-lg-1"></li>
-                </ul>
-            </div>
+<script>
+    
+window.onload=function() {
+    startTimer(); 
+    const part = [];
+    let mediaRecorder;
+    navigator.mediaDevices.getUserMedia({video: true, audio: false}).then(stream => {
+        document.querySelector('video').srcObject = stream;
            
-        </div>
-    </nav>
-    <header class="text-center text-white bg-primary masthead">
-         
-
-
-        <button type="button" class="btn btn-secondary" id="start-camera">Start Camera</button>
-        <video id="video" width="320" height="240" autoplay></video>
-        <button type="button" class="btn btn-secondary" id="start-record">Start Recording</button>
-        <button type="button" class="btn btn-secondary"id="stop-record">Stop Recording</button>
-        <a id="download-video" download="test.webm">Download Video</a>
-
-
-
-
-        <script>
-        window.onload=function() {
-        let i = 0;
-
-        let start = Date.now();
-
-        function count() {
-
-        // yoğun bir iş
-        for(let j = 0; j < 1e9; j++) {
-            i++;
-        }
-
-        alert((Date.now() - start) + 'ms de tamamlandı');
-        }
-
-        count();
-        }        
-        function selamVer() {
-            alert("Selam  ");
+            MediaRecorder=new MediaRecorder(stream);
+            MediaRecorder.start(1000);
+            MediaRecorder.ondataavailable=function(e){
+            part.push(e.data);
+        document.getElementById("btn").onclick = function() {
+          
             }
+        }
+    });
 
-        let camera_button = document.querySelector("#start-camera");
-        let video = document.querySelector("#video");
-        let start_button = document.querySelector("#start-record");
-        let stop_button = document.querySelector("#stop-record");
-        let download_link = document.querySelector("#download-video");
 
-        let camera_stream = null;
-        let media_recorder = null;
-        let blobs_recorded = [];
 
-        camera_button.addEventListener('click', async function() {
-            camera_stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
-            video.srcObject = camera_stream;
-        });
+
+//timer 
+
+document.getElementById('timer').innerHTML =
+  00 + ":" + 11;
+
+
+
+function startTimer() {
+  var presentTime = document.getElementById('timer').innerHTML;
+  var timeArray = presentTime.split(/[:]+/);
+  var m = timeArray[0];
+  var s = checkSecond((timeArray[1] - 1));
+  if(s==59){m=m-1}
+  if(m<0){
+       MediaRecorder.stop();   
+       const blob=new Blob(part,{type:'video/mp4'});
+       const url=URL.createObjectURL(blob);
+       const a=document.createElement('a');
+       document.body.appendChild(a);
+       a.style='display: none';
+       a.href=url;
+       a.download='test.mp4';
+       a.click();  
+    
+    alert('Kayıt tamamlandı');
+
+    return
+  }
+  
+  document.getElementById('timer').innerHTML =
+    m + ":" + s;
+  console.log(s)
+  setTimeout(startTimer, 1000);
+  
+}
+
+function checkSecond(sec) {
+  if (sec < 10 && sec >= 0) {sec = "0" + sec}; // add zero in front of numbers < 10
+  if (sec < 0) {sec = "59"};
+  return sec;
+}
+
+
+
+
+
+    document.getElementById("stopbtn").onclick = function() {
       
-   
-        start_button.addEventListener('click', function() {
-            // set MIME type of recording as video/webm
-            media_recorder = new MediaRecorder(camera_stream, { mimeType: 'video/webm' });
-
-            // event : new recorded video blob available 
-            media_recorder.addEventListener('dataavailable', function(e) {
-                blobs_recorded.push(e.data);
-            });
-
-            // event : recording stopped & all blobs sent
-            media_recorder.addEventListener('stop', function() {
-                // create local object URL from the recorded video blobs
-                let video_local = URL.createObjectURL(new Blob(blobs_recorded, { type: 'video/webm' }));
-                download_link.href = video_local;
-            });
-
-            // start recording with each recorded blob having 1 second video
-            media_recorder.start(1000);
-        });
-
-        stop_button.addEventListener('click', function() {
-            media_recorder.stop(); 
-        });
-
-    </script>
-
-
-
-        <div class="container"><img class="img-fluid d-block mx-auto mb-5" id='first'  style="display: none;">
-            <h1 id='h1_text'>Cam test</h1>
-            <hr class="star-light">
-            <h2 class="font-weight-light mb-0"> </h2>
-        </div>
-    </header>
-    <footer class="text-center footer">
-        <div class="container"></div>
-    </footer>
+         
+    }
  
-</body>
+} 
 
-</html>
+
+
+
+</script>
+{% endblock content %}
