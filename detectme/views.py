@@ -7,7 +7,7 @@ import cv2
 import threading
 import imutils
 
-from detectme.camera import IPWebCam ,VideoCamera_py
+from detectme.camera import IPWebCam ,VideoCamera_py,camera_record
 
 # https://blog.miguelgrinberg.com/post/video-streaming-with-flask/page/8
 
@@ -43,7 +43,7 @@ def gen(camera):
 
 #Method for laptop camera
 def video_feed(request):
-	return StreamingHttpResponse(gen(VideoCamera_py()),
+	return StreamingHttpResponse(gen(camera_record()),
                     #video type
 					content_type='multipart/x-mixed-replace; boundary=frame')
 

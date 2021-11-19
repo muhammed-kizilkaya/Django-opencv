@@ -29,6 +29,26 @@ class VideoCamera_py(object):
         
         return jpeg.tobytes()
 
+class camera_record(object):
+    def __init__(self):
+        self.video = cv2.VideoCapture(0)
+
+    def __del__(self):
+        self.video.release()
+
+
+    #This function is used in views
+    def get_frame(self):
+
+        success, image = self.video.read()
+        gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+
+        frame_flip =cv2.putText(image, "Her iyilik/guzel is bir sadakadir", (1, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (39, 32, 224),2)
+
+        ret, jpeg = cv2.imencode('.jpg', frame_flip)
+        
+        return jpeg.tobytes()
+
 
 
 class IPWebCam(object):
