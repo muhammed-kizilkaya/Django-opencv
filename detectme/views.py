@@ -18,8 +18,9 @@ def home(request):
 
 def cv2_page(request):
   
-
-    return render(request, "open_cv.html" )
+    context={}
+    context['title'] = 'VIEW CONTEXT'
+    return render(request, "open_cv.html", context) 
 
 def auto_record(request):
   
