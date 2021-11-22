@@ -1,5 +1,4 @@
-from imutils.video import VideoStream
-import imutils
+ 
 import cv2
 import os
 import urllib.request

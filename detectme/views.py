@@ -5,9 +5,10 @@ from django.views.decorators import gzip
 from django.http import StreamingHttpResponse
 import cv2
 import threading
-import imutils
-
+from detectme.admin import UserEntryAdmin
+ 
 from detectme.camera import IPWebCam ,VideoCamera_py
+from detectme.models import UserEntry
 
 # https://blog.miguelgrinberg.com/post/video-streaming-with-flask/page/8
 
@@ -27,8 +28,12 @@ def auto_record(request):
     return render(request, "auto_record.html" )
 
 ####################################
+def list_questions(request):
+    queryset=UserEntry.objects.all()
+    context={"object_list":queryset}
+    return render(request,"list_questions.html",context)
 
-
+####################################
 #Display the 2 videos
 def index(request):
     return render(request, 'streamapp/home.html')

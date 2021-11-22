@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block content %}
+ 
+
+<h1>LİSTE</h1>  
+  {% for instance in object_list %}
+  
+  <h2>{{ instance.rating }}  </h2>
+ 
+
+  
+  {% endfor %}
+      
+
+{% endblock %}
+
+    
