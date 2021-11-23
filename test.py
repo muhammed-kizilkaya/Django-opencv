@@ -32,7 +32,7 @@ global totalsecs
 print('Set the countdown timer:')
 hrs = int(input('hours: '))
 mins = int(input('minutes: '))
- totalsecs = 3600 * hrs + 30 * mins + secs
+totalsecs = 3600 * hrs + 30 * mins  
 cap = cv2.VideoCapture(0) 
 fourcc = cv2.VideoWriter_fourcc('X','V','I','D')
 videoWriter = cv2.VideoWriter('video.avi', fourcc, 30.0, (640,480))
@@ -42,7 +42,7 @@ while totalsecs != 0:
 
     sec = timedelta(seconds=int(totalsecs))
     d = datetime(1, 1, 1) + sec
-    print("%d hours %d minutes %d seconds left" % (d.hour, d.minute, d.second))
+ #   print("%d hours %d minutes %d seconds left" % (d.hour, d.minute, d.second))
     # delay for a second
      # decrement the local seconds total
  
