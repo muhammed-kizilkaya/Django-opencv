@@ -3,10 +3,251 @@
 {% block content %}
  
 
-<h1>LİSTE</h1>  
+ 
   {% for instance in object_list %}
   
-  <h2>{{ instance.rating }}  </h2>
+  <h1>{{ instance.header }}  </h1>
+  <br><br><br> 
+
+    <h4>{{ instance.description }}  </h4>
+    <br><br>
+
+    {% if  instance.rating  == "Video" %}
+    
+    
+    <img src = "{% url 'video_feed' %}">
+
+  {% else %}
+  <main class="container">
+    <section class="section_1">
+     
+      <form class="form_1">
+        <span class="form_1_circle"></span>
+        <div>
+          <input checked type="radio" name="section_1_radio" class="input" id="Pepperoni" />
+          <label class="cradio" for="Pepperoni"></label>
+          <label for="Pepperoni">{{ instance.cevap_a }}</label>
+  
+        </div>
+        <div>
+          <input type="radio" name="section_1_radio" class="input" id="Mushrooms" />
+          <label class="cradio" for="Mushrooms"></label>
+          <label for="Mushrooms">{{ instance.cevap_b }}</label>
+        </div>
+        <div>
+          <input type="radio" name="section_1_radio" class="input" id="Onions" />
+          <label class="cradio" for="Onions"></label>
+          <label for="Onions">{{ instance.cevap_c }}</label>
+        </div>
+        <div>
+          <input type="radio" name="section_1_radio" class="input" id="Sausage" />
+          <label class="cradio" for="Sausage"></label>
+          <label for="Sausage">{{ instance.cevap_d }}</label>
+        </div>
+        <div>
+          <input type="radio" name="section_1_radio" class="input" id="Bacon" />
+          <label class="cradio" for="Bacon"></label>
+          <label for="Bacon">{{ instance.cevap_e }}</label>
+        </div>
+ 
+      </form>
+    </section>
+  </main>
+
+
+<style>
+  :root {
+  --color-text: #2c3e50;
+  --color-text-light: #34495e;
+  --color-expression-text: #ecf0f1;
+  --shadow-dark: 0 2rem 6rem rgba(0, 0, 0, 0.3);
+  --shadow-light: 0 2rem 5rem rgba(0, 0, 0, 0.06);
+  --line: 1px solid var(--color-grey-light-2);
+}
+ 
+ 
+ 
+.section_1,
+.section_2,
+.section_3 {
+  width: 85rem;
+  padding: 3rem;
+  border: 1px solid;
+  font-size: 2rem;
+  box-sizing: border-box;
+}
+
+section header {
+  font-size: 2.3rem;
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+ 
+
+form > div {
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  position: relative;
+  margin-bottom: 1.5rem;
+}
+
+.input[type="radio"] {
+  transform: translate(2px, -4px) scale(1.9);
+  position: absolute;
+  z-index: 1;
+  opacity: 0;
+  cursor: pointer;
+}
+
+label {
+  cursor: pointer;
+}
+
+.cradio {
+  cursor: pointer;
+  display: inline-block;
+  position: relative;
+  padding: 9px;
+  border: 3px solid #34495e;
+  border-radius: 50%;
+  transform: translate(0.5px, -2px);
+  margin-right: 0.5rem;
+  background: transparent;
+  margin-right: 1.3rem;
+}
+
+.cradio::after {
+  content: "";
+  width: 70%;
+  height: 70%;
+  position: absolute;
+  top: 48%;
+  left: 51%;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  background: transparent;
+}
+/* .input[type="radio"]:checked + .cradio:after {
+    background: var(--color-text);
+} */
+
+.form_1 {
+  display: flex;
+  flex-direction: column;
+}
+
+.form_1_circle {
+  width: 1.4rem;
+  height: 1.4rem;
+  position: fixed;
+  background: var(--color-text);
+  border-radius: 50%;
+  top: 0;
+  left: 0;
+  transform-origin: center;
+}
+
+</style>
+
+<script>
+  window.onload = () => {
+  const DOMSelectors = {
+    circle1: ".form_1_circle",
+    form1: ".form_1",
+    input1: `.input[type="radio"]:checked`
+  };
+
+  const Selectors = {
+    cradio: ".cradio"
+  };
+
+  DOMElements = getDOMElements();
+  DOMElements.form1.addEventListener("change", handleChangeEvent);
+  window.addEventListener("resize", () => {
+    DOMElements.circle1.style.transition = `none`;
+    setDot();
+  });
+  window.addEventListener("scroll", () => {
+    DOMElements.circle1.style.transition = "none";
+    setDot();
+  });
+
+  function handleChangeEvent(event) {
+    event.preventDefault();
+    const input = event.target;
+    DOMElements = getDOMElements();
+    DOMElements.circle1.style.transition = `transform 0.6s cubic-bezier(0.65, 0, 0.35, 1)`;
+    setDot();
+  }
+
+  function setDot() {
+    const checkedEleRect = DOMElements.input1.getClientRects()[0];
+    DOMElements.circle1.style.transform = `translate(${
+      Math.round(checkedEleRect.left) + 4
+    }px, ${Math.round(checkedEleRect.top) + 4}px)`;
+  }
+
+  setDot();
+
+  function getDOMElements() {
+    let DOMElements = {};
+    for (let selector in DOMSelectors) {
+      DOMElements[selector] = document.querySelector(DOMSelectors[selector]);
+    }
+    return DOMElements;
+  }
+};
+
+</script>
+  {% endif %}
+
+    <h4 style="color: red;">{{ instance.rating }}  </h4>
+  
+    <div class="pagination" >
+      <span class='step-links'>
+        
+        {% if object_list.has_previous %}
+        <a href='?page=1'>First</a>
+        <a style="color: white;" href='?page={{ object_list.previous_page_number }}'>Previous</a>
+        {% endif %}
+          
+        <span style="color: rgb(255, 255, 255);" class= 'current'>
+          Page {{ object_list.number }} of {{ object_list.paginator.num_pages }}
+        </span>
+        {% if object_list.has_next %}
+        <a style="color: white;" href='?page={{ object_list.next_page_number }}'>Next</a>
+        
+        <a style="color: white;" href='?page={{ object_list.paginator.num_pages }}'>Last</a>
+        {% endif %}
+          
+
+
+        <style>
+          .pagination {
+            position: fixed;
+            margin: auto;
+            bottom: 0px;
+            left: 0px;
+            width: 100%;
+            height: 50px;
+            padding:15px;
+            align-items: center;
+            justify-content: center;  
+            background-color: #000;
+                  }
+          </style>
+      </span>
+    </div>
+
+
+
+
+      </span>
+   
+    
+        
  
 
   

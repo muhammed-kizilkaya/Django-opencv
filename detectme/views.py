@@ -10,8 +10,32 @@ from detectme.admin import UserEntryAdmin
 from detectme.camera import IPWebCam ,VideoCamera_py
 from detectme.models import UserEntry
 
-# https://blog.miguelgrinberg.com/post/video-streaming-with-flask/page/8
+from django.core.paginator import Paginator
 
+##########################################
+def show_all_page(request):
+    context={}
+    filtered_quiz= UserEntry.objects.all()
+    paginator = Paginator(filtered_quiz, 1)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    context['object_list'] = page_obj
+    return render(request, "list_questions.html", context)
+
+##########################################
+
+
+def list_questions(request):
+    queryset=UserEntry.objects.all()
+    filter_query=UserEntry.objects.all()[:5]
+    if filter_query.count() < 2:
+        print('Looks ok  !')
+    else:
+        print('somehting wrong !')
+        context={"object_list":filter_query}
+    return render(request,"list_questions.html",context)
+
+####################################
 def home(request):
     context = {}
 
@@ -28,12 +52,7 @@ def auto_record(request):
     return render(request, "auto_record.html" )
 
 ####################################
-def list_questions(request):
-    queryset=UserEntry.objects.all()
-    context={"object_list":queryset}
-    return render(request,"list_questions.html",context)
 
-####################################
 #Display the 2 videos
 def index(request):
     return render(request, 'streamapp/home.html')
@@ -59,8 +78,8 @@ def webcam_feed(request):
 					content_type='multipart/x-mixed-replace; boundary=frame')
 
 ######################################
-    
-
+  
+######################################
 class VideoCamera(object):
     def __init__(self):
         self.video = cv2.VideoCapture(0)
