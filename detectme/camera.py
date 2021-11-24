@@ -6,7 +6,9 @@ import urllib.request
 import numpy as np
 from django.conf import settings
 import time
-  
+from  detectme.models import UserEntry
+ 
+ 
 
 class VideoCamera_py(object):
     def __init__(self):
@@ -15,6 +17,12 @@ class VideoCamera_py(object):
         self.videoWriter = cv2.VideoWriter('video.avi', fourcc, 30.0, (640,480)) 
         self.hrs = 0
         self.mins = 10
+        queryset=UserEntry.objects.all()
+        for instance in queryset:
+            self.hrs = instance.video_time
+            self.mins = instance.video_sec
+        print("database oku",self.hrs)
+        print("database oku",self.mins)
         self.totalsecs = 3600 * self.hrs + 30 * self.mins  
 
     def __del__(self):
@@ -32,7 +40,8 @@ class VideoCamera_py(object):
 
         self.totalsecs -= 1
         if self.totalsecs == 0:
-            return  jpeg.tobytes()
+            self.video.release()
+            return jpeg.tobytes()
 
         return jpeg.tobytes() 
  
