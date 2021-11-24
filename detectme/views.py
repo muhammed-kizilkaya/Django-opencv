@@ -7,7 +7,7 @@ import cv2
 import threading
 from detectme.admin import UserEntryAdmin
  
-from detectme.camera import IPWebCam ,VideoCamera_py
+from detectme.camera import VideoCamera_py  
 from detectme.models import UserEntry
 
 from django.core.paginator import Paginator
@@ -24,7 +24,6 @@ def show_all_page(request):
 
 ##########################################
 
-
 def list_questions(request):
     queryset=UserEntry.objects.all()
     filter_query=UserEntry.objects.all()[:5]
@@ -38,17 +37,12 @@ def list_questions(request):
 ####################################
 def home(request):
     context = {}
-
     return render(request, "base.html", context)
 
 def cv2_page(request):
-  
-
     return render(request, "open_cv.html" )
 
 def auto_record(request):
-  
-
     return render(request, "auto_record.html" )
 
 ####################################
@@ -59,58 +53,18 @@ def index(request):
 
 #Every time you call the phone and laptop camera method gets frame
 #More info found in camera.py
+
+ 
 def gen(camera):
 	while True:
 		frame = camera.get_frame()
 		yield (b'--frame\r\n'
 				b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
 
-#Method for laptop camera
-def video_feed(request):
+ 
+#Method for phone camera
+def webcam_feed(request):
 	return StreamingHttpResponse(gen(VideoCamera_py()),
                     #video type
 					content_type='multipart/x-mixed-replace; boundary=frame')
 
-#Method for phone camera
-def webcam_feed(request):
-	return StreamingHttpResponse(gen(IPWebCam()),
-                    #video type
-					content_type='multipart/x-mixed-replace; boundary=frame')
-
-######################################
-  
-######################################
-class VideoCamera(object):
-    def __init__(self):
-        self.video = cv2.VideoCapture(0)
-        (self.grabbed, self.frame) = self.video.read()
-        threading.Thread(target=self.update, args=()).start()
-
-    def __del__(self):
-        self.video.release()
-
-    def get_frame(self):
-        image = self.frame
-        _, jpeg = cv2.imencode('.jpg', image)
-        return jpeg.tobytes()
-
-    def update(self):
-        while True:
-            (self.grabbed, self.frame) = self.video.read()
-
-
-    def gen(camera):
-        while True:
-            frame = camera.get_frame()
-            yield(b'--frame\r\n'
-                b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
-
-
-@gzip.gzip_page
-def detectme(request):
-    try:
-        cam = VideoCamera()
-        return StreamingHttpResponse(gen(cam), content_type="multipart/x-mixed-replace;boundary=frame")
-    except:  # This is bad! replace it with proper handling
-        print("Camera ...")
-        pass
