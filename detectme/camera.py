@@ -6,12 +6,7 @@ import urllib.request
 import numpy as np
 from django.conf import settings
 import time
-global hrs
-global mins
-global secs
-global totalsecs
- 
- 
+  
 
 class VideoCamera_py(object):
     def __init__(self):
@@ -30,14 +25,14 @@ class VideoCamera_py(object):
     def get_frame(self):
         success, image = self.video.read()
         self.videoWriter.write(image)
-        gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+         
         frame_flip = cv2.flip(image, 1)
-        ret, jpeg = cv2.imencode('.jpg', gray)
+        ret, jpeg = cv2.imencode('.jpg', image)
         cv2.putText(image, str(self.totalsecs), (70,70), cv2.FONT_HERSHEY_SIMPLEX , 1, (255, 0, 0), 2, cv2.LINE_AA)# adding timer text
 
         self.totalsecs -= 1
         if self.totalsecs == 0:
-            return 
+            return  jpeg.tobytes()
 
         return jpeg.tobytes() 
  
