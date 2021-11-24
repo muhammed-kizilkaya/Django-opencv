@@ -11,7 +11,7 @@ from detectme.camera import VideoCamera_py
 from detectme.models import UserEntry
 
 from django.core.paginator import Paginator
-
+ 
 ##########################################
 def show_all_page(request):
     context={}
@@ -56,14 +56,18 @@ def index(request):
 
  
 def gen(camera):
+    
 	while True:
 		frame = camera.get_frame()
+         
+        
 		yield (b'--frame\r\n'
 				b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
 
  
 #Method for phone camera
 def webcam_feed(request):
+    
 	return StreamingHttpResponse(gen(VideoCamera_py()),
                     #video type
 					content_type='multipart/x-mixed-replace; boundary=frame')

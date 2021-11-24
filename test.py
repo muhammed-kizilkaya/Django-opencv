@@ -6,8 +6,8 @@ global mins
 global secs
 global totalsecs
 print('Set the countdown timer:')
-hrs = int(input('hours: '))
-mins = int(input('minutes: '))
+hrs = 0
+mins = 5
 totalsecs = 3600 * hrs + 30 * mins  
 cap = cv2.VideoCapture(0) 
 fourcc = cv2.VideoWriter_fourcc('X','V','I','D')
@@ -18,7 +18,8 @@ while totalsecs != 0:
     sec = timedelta(seconds=int(totalsecs))
     d = datetime(1, 1, 1) + sec
     ret, frame = cap.read()
-    videoWriter.write(frame)
+    gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+    videoWriter.write(gray)
     cv2.imshow('frame',frame)
     cv2.putText(frame, str(totalsecs), (70,70), cv2.FONT_HERSHEY_SIMPLEX , 1, (255, 0, 0), 2, cv2.LINE_AA)# adding timer text
     totalsecs -= 1
