@@ -15,10 +15,56 @@
     {% if  instance.rating  == "Video" %}
     
     <h2 > Video Süresi {{ instance.video_time }}: {{ instance.video_sec }} </h2>
-    
+    <!--- MODAL -->
+ 
+
+   <link rel="stylesheet" href="http://code.jquery.com/ui/1.8.18/themes/base/jquery-ui.css" type="text/css" media="all" />
+
+
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+
+   <link href="http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" rel="Stylesheet"></link>
+  <script src="http://code.jquery.com/ui/1.10.2/jquery-ui.js" ></script>
+
+ 
+<div class="modal fade" id="ModalExample" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Welcome To DJango Tutorial</h5>
+        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">A modal is a dialog box window that is displayed on top of the current page.This website is about jquery modal</div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" type="button"  onclick="test()" data-dismiss="modal">Ok Continue</button>
+
+        <script>
+          function test() {
+            alert("You have successfully completed the tutorial");
+            document.getElementById("myImg").src = "{% url 'webcam_feed' %}";
+          }
+        </script>
+      </div>
+    </div>
+  </div>
+</div>
+ 
+
+<script type="text/javascript">
+    $(window).on('load',function(){
+        $('#ModalExample').modal('show');
+    });
+</script>
+
+<!-- MODAL SON-->
+  
      
-    <img src = "{% url 'webcam_feed' %}">
+<img id="myImg" src="https://cdn.t3kys.com/static/assets/media/logos/KYS_LOGO-01.png" width="1024" height="768">
     <h1 id="site-name"><a href="{% url 'admin:index' %}"> Yönetim</a></h1>
+ 
 
 
   {% else %}
